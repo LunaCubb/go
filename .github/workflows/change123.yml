@@ -16,7 +16,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
-          go-version: 1.23  # 这里可以改成项目需要的 Go 版本
+          go-version: '1.24'  # 这里可以改成项目需要的 Go 版本
           
       - name: Move to src directory
         run: cd src  # 确保在 src 目录执行
