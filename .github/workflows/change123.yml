@@ -11,7 +11,9 @@ jobs:
     
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3  # 拉取代码
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # 拉取完整仓库（不是浅层克隆）
 
       - name: Set up Go
         uses: actions/setup-go@v4
