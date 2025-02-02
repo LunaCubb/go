@@ -1,27 +1,36 @@
 name: Go Test
 
 on:
-  push:       # 每次 push 代码时运行
-  pull_request: # 每次提交 PR 时运行
-  workflow_dispatch: # 允许手动触发
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   test:
-    runs-on: ubuntu-latest  # 运行环境（可以改成 macos-latest / windows-latest）
-    
+    runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0  # 拉取完整仓库（不是浅层克隆）
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0  # 确保完整克隆仓库
 
-      - name: Set up Go
-        uses: actions/setup-go@v4
-        with:
-          go-version: 1.23  # 这里可以改成项目需要的 Go 版本
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: 1.23  # 修改为你的 Go 版本
 
-      - name: Install dependencies
-        run: go mod tidy  # 确保依赖正确
+    - name: Move to src directory
+      run: cd src  # 确保在 src 目录执行
 
-      - name: Run tests
-        run: go test -v ./...  # 运行所有测试
+    - name: Verify go.mod exists
+      run: ls -l src/go.mod || echo "go.mod not found!"  # 检查 go.mod
+
+    - name: Install dependencies
+      run: cd src && go mod tidy  # 进入 src 目录并下载依赖
+
+    - name: Run tests
+      run: cd src && go test -v ./...  # 进入 src 目录并运行测试
